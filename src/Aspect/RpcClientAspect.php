@@ -12,7 +12,14 @@ use Hyperf\Amqp\RpcClient as RabbitRpcClient;
 use Niexiawei\HyperfRabbitmqRpc\Exception\RpcServiceUndefinedException;
 use Hyperf\Amqp\Message\DynamicRpcMessage;
 use Niexiawei\HyperfRabbitmqRpc\ReplyResponse;
+use Hyperf\Di\Annotation\Aspect;
+use Niexiawei\HyperfRabbitmqRpc\RpcAmqpMessage;
 
+/**
+ * Class RpcAspect
+ * @package App\Aspect
+ * @Aspect()
+ */
 class RpcClientAspect extends AbstractAspect
 {
     public $annotations = [
@@ -42,16 +49,26 @@ class RpcClientAspect extends AbstractAspect
         if (empty($service_config)) {
             throw new RpcServiceUndefinedException('rpc服务未定义');
         }
+
+        if (!isset($service_config['exchange']) || !isset($service_config['routingKey'])) {
+            throw new RpcServiceUndefinedException('rpc服务未定义');
+        }
+        
         $rpcClient = ApplicationContext::getContainer()->get(RabbitRpcClient::class);
-        $res = $rpcClient->call(new DynamicRpcMessage($service_config['exchange'], $service_config['routingKey'], [
+        $res = $rpcClient->call(new RpcAmqpMessage($service_config['exchange'], $service_config['routingKey'], [
             'method' => $service_name,
             'param' => $proceedingJoinPoint->getArguments()
-        ]));
+        ], $service_config['pool_name'] ?? 'default'));
+        
         $response = unserialize($res);
+        
         if (!$response instanceof ReplyResponse) {
             throw new \Exception('未知的返回类型');
         }
 
-        return (array)$response;
+        if ($response->code !== 1) {
+            throw new \Exception($response->error);
+        }
+        return $response->data;
     }
 }

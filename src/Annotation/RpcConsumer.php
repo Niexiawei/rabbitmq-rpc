@@ -28,7 +28,7 @@ class RpcConsumer extends AbstractAnnotation
     /**
      * @var string
      */
-    public $name = 'Consumer';
+    public $name = 'RpcConsumer';
 
     /**
      * @var int

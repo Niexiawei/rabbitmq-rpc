@@ -14,9 +14,9 @@ class RpcConsumerBase extends ConsumerMessage
         $handle = make(MethodHandle::class);
         try {
             $res_data = $handle->handle($data['method'], $data['param']);
-            $response = new ReplyResponse(1,$res_data,'ok',null);
+            $response = new ReplyResponse(1,$res_data,'ok','');
         } catch (\Throwable $exception) {
-            $response = new ReplyResponse($exception->getCode(),[],null,$exception->getMessage());
+            $response = new ReplyResponse($exception->getCode(),[],'',$exception->getMessage());
         }
 
         $this->reply(serialize($response), $message);

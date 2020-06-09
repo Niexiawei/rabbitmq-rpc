@@ -13,7 +13,14 @@ use Hyperf\Di\Annotation\AbstractAnnotation;
  */
 class RpcClient extends AbstractAnnotation
 {
+    /**
+     * @var string
+     */
     public $rpc;
+
+    /**
+     * @var string
+     */
 
     public $service;
 }

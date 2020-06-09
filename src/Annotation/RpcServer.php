@@ -15,6 +15,9 @@ use Hyperf\Di\Annotation\AbstractAnnotation;
 
 class RpcServer extends AbstractAnnotation
 {
+    /**
+     * @var string
+     */
     public $name;
 
     public function collectMethod(string $className, ?string $target): void
