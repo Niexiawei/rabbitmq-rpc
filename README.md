@@ -1,5 +1,5 @@
-# component-creater
+# hyperf-rabbitmq-rpc
 
 ```
-composer create-project hyperf/component-creater
+基于hyperf amqp组件实现的rpc服务
 ```
