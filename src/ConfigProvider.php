@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Niexiawei\HyperfRabbitmqRpc;
 
 use Niexiawei\HyperfRabbitmqRpc\Listener\BeforeMainServerStartListener;
+use Niexiawei\HyperfRabbitmqRpc\Listener\MainWorkerStartListener;
 
 class ConfigProvider
 {
@@ -23,11 +24,15 @@ class ConfigProvider
             ],
             'commands' => [
             ],
-            'listeners'=>[
-              BeforeMainServerStartListener::class
+            'listeners' => [
+                BeforeMainServerStartListener::class,
+                MainWorkerStartListener::class
             ],
             'annotations' => [
                 'scan' => [
+                    'collectors'=>[
+
+                    ],
                     'paths' => [
                         __DIR__,
                     ],

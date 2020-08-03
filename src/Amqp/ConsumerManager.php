@@ -29,12 +29,11 @@ class ConsumerManager
 
     public function run()
     {
-        $classes = AnnotationCollector::getClassByAnnotation(RpcConsumer::class);
+        $classes = AnnotationCollector::getClassesByAnnotation(RpcConsumer::class);
         /**
          * @var string
          * @var RpcConsumer $annotation
          */
-
         $config = $this->container->get(ConfigInterface::class);
 
         foreach ($classes as $class => $annotation) {

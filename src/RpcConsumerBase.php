@@ -9,6 +9,12 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class RpcConsumerBase extends ConsumerMessage
 {
+    /**
+     * @param $data
+     * @param AMQPMessage $message
+     * @return string
+     */
+
     public function consumeMessage($data, AMQPMessage $message): string
     {
         $handle = make(MethodHandle::class);

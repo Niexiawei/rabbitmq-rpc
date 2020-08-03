@@ -9,6 +9,7 @@ class MethodHandle
     public static $mapping = [];
 
     public function handle($method,$param){
+
         if (!isset(self::$mapping[$method])){
             throw new \Exception('不存在的rpc方法');
         }

@@ -21,6 +21,7 @@
         "php": ">=7.4",
         "ext-swoole": ">=4.5",
         "hyperf/amqp": "~2.0.0",
+        "hyperf/command": "^2.0",
         "hyperf/di": "~2.0.0",
         "hyperf/framework": "~2.0.0"
     },

@@ -11,7 +11,7 @@ class ReplyResponse
     public $msg;
     public $error;
 
-    public function __construct(int $code,$data,string $msg,string $error)
+    public function __construct($code,$data,string $msg,string $error)
     {
         $this->data = $data;
         $this->code = $code;

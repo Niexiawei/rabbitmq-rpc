@@ -13,6 +13,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/fig/http-message-util" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofphp/php-cs-fixer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/hyperf/amqp" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/hyperf/command" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/hyperf/contract" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/hyperf/di" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/hyperf/dispatcher" />
