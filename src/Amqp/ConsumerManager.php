@@ -39,11 +39,11 @@ class ConsumerManager
 
         foreach ($classes as $class => $annotation) {
             $instance = make($class);
-            
+
             if (!$instance instanceof ConsumerMessageInterface) {
                 continue;
             }
-            
+
             $rpc_config = $config->get('rabbitmq_rpc.' . $annotation->rpc);
             if (empty($rpc_config)) {
                 throw new RpcServiceUndefinedException('rpc服务未定义');
@@ -51,7 +51,7 @@ class ConsumerManager
 
             $instance->setExchange($rpc_config['exchange']);
             $instance->setRoutingKey($rpc_config['routingKey']);
-            $annotation->queue && $instance->setQueue($rpc_config['routingKey'].'.'.$annotation->queue);
+            $annotation->queue && $instance->setQueue($rpc_config['routingKey'] . '.' . $annotation->queue);
             !is_null($annotation->enable) && $instance->setEnable($annotation->enable);
             property_exists($instance, 'container') && $instance->container = $this->container;
             $annotation->maxConsumption && $instance->setMaxConsumption($annotation->maxConsumption);
@@ -93,7 +93,7 @@ class ConsumerManager
                 return $this->consumerMessage;
             }
 
-            public function isEnable(): bool
+            public function isEnable($server): bool
             {
                 return $this->consumerMessage->isEnable();
             }
