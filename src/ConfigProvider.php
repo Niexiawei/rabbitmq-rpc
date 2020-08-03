@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace Niexiawei\HyperfRabbitmqRpc;
 
 use Niexiawei\HyperfRabbitmqRpc\Listener\BeforeMainServerStartListener;
+use Niexiawei\HyperfRabbitmqRpc\Listener\ConsumerManagerStartListener;
 use Niexiawei\HyperfRabbitmqRpc\Listener\MainWorkerStartListener;
+use Niexiawei\HyperfRabbitmqRpc\Listener\RpcServerAnnotationListener;
 
 class ConfigProvider
 {
@@ -25,8 +27,8 @@ class ConfigProvider
             'commands' => [
             ],
             'listeners' => [
-                BeforeMainServerStartListener::class,
-                MainWorkerStartListener::class
+                ConsumerManagerStartListener::class,
+                RpcServerAnnotationListener::class
             ],
             'annotations' => [
                 'scan' => [

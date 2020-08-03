@@ -6,14 +6,20 @@ namespace Niexiawei\HyperfRabbitmqRpc;
 
 class MethodHandle
 {
-    public static $mapping = [];
+    public $mapping = [];
 
-    public function handle($method,$param){
 
-        if (!isset(self::$mapping[$method])){
-            throw new \Exception('不存在的rpc方法');
+    public function setMapping(string $service, array $handle)
+    {
+        $this->mapping[$service] = $handle;
+    }
+
+    public function handle($method, $param)
+    {
+        if (!isset($this->mapping[$method])) {
+            throw new \Exception(sprintf("不存在的rpc方法:%s",$method));
         }
-        $class = make(self::$mapping[$method][0]);
-        return $class->{self::$mapping[$method][1]}(...$param);
+        $class = make($this->mapping[$method][0]);
+        return $class->{$this->mapping[$method][1]}(...$param);
     }
 }

@@ -9,7 +9,7 @@ use Hyperf\Framework\Event\BeforeMainServerStart;
 use Psr\Container\ContainerInterface;
 use Niexiawei\HyperfRabbitmqRpc\Amqp\ConsumerManager;
 
-class BeforeMainServerStartListener implements ListenerInterface
+class ConsumerManagerStartListener implements ListenerInterface
 {
 
     /**

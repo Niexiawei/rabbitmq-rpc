@@ -6,16 +6,26 @@ namespace Niexiawei\HyperfRabbitmqRpc\Listener;
 
 use Hyperf\Di\Annotation\AnnotationCollector;
 use Hyperf\Event\Contract\ListenerInterface;
+use Hyperf\Framework\Event\BeforeMainServerStart;
 use Hyperf\Framework\Event\MainWorkerStart;
 use Niexiawei\HyperfRabbitmqRpc\Annotation\RpcServer;
 use Niexiawei\HyperfRabbitmqRpc\MethodHandle;
+use Hyperf\Di\Annotation\Inject;
 
-class MainWorkerStartListener implements ListenerInterface
+class RpcServerAnnotationListener implements ListenerInterface
 {
+
+    /**
+     * @Inject
+     * @var MethodHandle
+     */
+
+    protected $handle;
+
     public function listen(): array
     {
         return [
-            MainWorkerStart::class
+            BeforeMainServerStart::class
         ];
     }
 
@@ -24,8 +34,7 @@ class MainWorkerStartListener implements ListenerInterface
         $methods = AnnotationCollector::getMethodsByAnnotation(RpcServer::class);
         foreach ($methods as $method) {
             if ($method['annotation'] instanceof RpcServer) {
-                //$annotation->service
-                MethodHandle::$mapping[$method['annotation']->service] = [$method['class'], $method['method']];
+                $this->handle->setMapping($method['annotation']->service,[$method['class'], $method['method']]);
             }
         }
     }
