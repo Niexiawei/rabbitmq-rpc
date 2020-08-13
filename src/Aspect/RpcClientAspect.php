@@ -9,6 +9,7 @@ use Niexiawei\HyperfRabbitmqRpc\Annotation\RpcClient as Rpc;
 use Hyperf\Di\Aop\AbstractAspect;
 use Hyperf\Di\Aop\ProceedingJoinPoint;
 use Hyperf\Amqp\RpcClient as RabbitRpcClient;
+use Niexiawei\HyperfRabbitmqRpc\Exception\RpcServiceException;
 use Niexiawei\HyperfRabbitmqRpc\Exception\RpcServiceUndefinedException;
 use Hyperf\Amqp\Message\DynamicRpcMessage;
 use Niexiawei\HyperfRabbitmqRpc\ReplyResponse;
@@ -63,12 +64,11 @@ class RpcClientAspect extends AbstractAspect
         $response = unserialize($res);
 
         if (!$response instanceof ReplyResponse) {
-            throw new \Exception('未知的返回类型');
+            throw new RpcServiceException('未知的返回类型', '');
         }
 
         if ($response->code !== 1) {
-            var_dump($response);
-            throw new \Exception($response->error);
+            throw new RpcServiceException($response->error, $response->method);
         }
 
         return $response->data;
