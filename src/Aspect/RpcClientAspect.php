@@ -29,14 +29,16 @@ class RpcClientAspect extends AbstractAspect
 
     public function process(ProceedingJoinPoint $proceedingJoinPoint)
     {
-
+        $ret = null;
         $rpc_service = '';
         $service_name = '';
+        $order = '';
         $methodMetaData = $proceedingJoinPoint->getAnnotationMetadata()->method[Rpc::class] ?? null;
 
         if ($methodMetaData instanceof Rpc) {
             $rpc_service = $methodMetaData->rpc;
             $service_name = $methodMetaData->service;
+            $order = $methodMetaData->order;
         }
 
         if (empty($rpc_service) || empty($service_name)) {
@@ -56,6 +58,11 @@ class RpcClientAspect extends AbstractAspect
         }
 
         $rpcClient = ApplicationContext::getContainer()->get(RabbitRpcClient::class);
+
+        if ($order == 'befor') {
+            $ret = $proceedingJoinPoint->process();
+        }
+
         $res = $rpcClient->call(new RpcAmqpMessage($service_config['exchange'], $service_config['routingKey'], [
             'method' => $service_name,
             'param' => $proceedingJoinPoint->getArguments()
@@ -69,6 +76,14 @@ class RpcClientAspect extends AbstractAspect
 
         if ($response->code !== 1) {
             throw new RpcServiceException($response->error, $response->method);
+        }
+
+        if ($order == 'after') {
+            $ret = $proceedingJoinPoint->process();
+        }
+        
+        if (!empty($ret)) {
+            return ['rpc_response' => $response->data ?? '', 'local_response' => $ret];
         }
 
         return $response->data;

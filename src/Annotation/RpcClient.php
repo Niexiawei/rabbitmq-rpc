@@ -23,4 +23,10 @@ class RpcClient extends AbstractAnnotation
      */
 
     public $service;
+
+    /**
+     * @var string "after|befor"
+     */
+    
+    public $order = '';
 }
